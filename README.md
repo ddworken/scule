@@ -1,4 +1,4 @@
-# scule
+# scule [![Build Status](https://travis-ci.org/ddworken/scule.svg)](https://travis-ci.org/ddworken/scule)
 
 ```scule``` is a simple UTF-8 aware program to change the case of text. ```scule``` is UTF-8 aware and works correctly with UTF-8. ```scule``` is made to be used as part of a pipeline or as the start of a pipeline. When receiving input from stdin, case is a streaming program and will output text as it is received. 
 
