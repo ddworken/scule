@@ -62,12 +62,12 @@ fn main(){
             let byte = byte.unwrap();
             bytes.push(byte);
             if isPrintableASCII(byte){
-                convertCase(bytes.clone(), upperCase);
+                print!("{}", convertCase(bytes.clone(), upperCase));
                 bytes = Vec::new(); 
                 bytes = bytes;
             }
         }
-        convertCase(bytes.clone(), upperCase);
+        print!("{}", convertCase(bytes.clone(), upperCase));
         std::process::exit(0);
     }
     
@@ -82,7 +82,7 @@ fn isPrintableASCII(char: u8) -> bool {
     return false;
 }
 
-fn convertCase(bytes: Vec<u8>, isUpperCase: bool) {
+fn convertCase(bytes: Vec<u8>, isUpperCase: bool) -> String {
     let byteSlice = &bytes[..];
     let str = match str::from_utf8(byteSlice) {
         Ok(n) => n,
@@ -90,10 +90,10 @@ fn convertCase(bytes: Vec<u8>, isUpperCase: bool) {
     };
     let string = String::from(str);
     if !isUpperCase {
-        print!("{}", string.to_lowercase());
+        return string.to_lowercase();
     }
     else {
-        print!("{}", string.to_uppercase());
+        return string.to_uppercase();
     }
 }
 
@@ -110,3 +110,48 @@ fn openFile(filename: String) -> Vec<u8> {
     };
 }
 
+#[cfg(test)]
+mod tests {
+    use std::process::Command; 
+    use std::str; 
+
+    use super::openFile;
+    use super::convertCase;
+    use super::isPrintableASCII;
+
+    #[test]
+    fn testIsPrintableASCII() {
+        assert_eq!(true, isPrintableASCII(97u8));
+        assert_eq!(false, isPrintableASCII(10u8));
+    }
+
+
+    #[test]
+    fn testConvertCaseUnicode() {
+        let upperCased = convertCase(String::from("Übercode Idą gęsi łąką").into_bytes(), true);
+        assert_eq!(upperCased, "ÜBERCODE IDĄ GĘSI ŁĄKĄ");
+
+        let lowerCased = convertCase(String::from("Übercode Idą gęsi łąką").into_bytes(), false);
+        assert_eq!(lowerCased, "übercode idą gęsi łąką");
+    }
+
+    #[test]
+    fn testConvertCaseASCII() {
+        let upperCased = convertCase(String::from("The Quick Brown Fox Jumps Over The Lazy Dog").into_bytes(), true);
+        assert_eq!(upperCased, "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG");
+
+        let lowerCased = convertCase(String::from("The Quick Brown Fox Jumps Over The Lazy Dog").into_bytes(), false);
+        assert_eq!(lowerCased, "the quick brown fox jumps over the lazy dog");
+    }
+
+    #[test]
+    fn testOpenFile() {
+        let file = openFile(String::from("./LICENSE")); //just testing whether or not we can open and read the LICENSE file
+        let mut sum = 0u32;
+        for byte in file {
+            sum += byte as u32;
+        }
+        assert_eq!(sum, 1603466);
+    }
+
+}
