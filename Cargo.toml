@@ -1,9 +1,15 @@
 [package]
 name = "scule"
+description = "A simple UTF-8 aware, pipeable, case converter. "
+documentation = "https://github.com/ddworken/scule/blob/dev/README.md"
+homepage = "https://github.com/ddworken/scule/blob/dev/README.md"
+repository = "https://github.com/ddworken/scule"
+readme = "README.md"
+keywords = ["case", "scule", "capital", "uppercase", "lowercase"]
+license = "GPL-2.0"
 version = "1.0.0"
 authors = ["David Dworken <david@daviddworken.com>"]
 
 [dependencies]
 docopt = "~0.6.11"
 rustc-serialize = "0.3"  # if you're using `derive(RustcDecodable)`
-
